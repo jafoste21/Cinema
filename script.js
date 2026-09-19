@@ -17,7 +17,9 @@ function onYouTubeIframeAPIReady() {
             fs: 0,
             iv_load_policy: 3,
             modestbranding: 1,
-            playsinline: 1
+            playsinline: 1,
+            origin: window.location.origin,
+            enablejsapi: 1
         },
         events: {
             onReady: onPlayerReady,
@@ -31,6 +33,13 @@ function onPlayerReady() {
     console.log('[Cinema] Player pronto');
     playerPronto = true;
     player.setVolume(volumeAtual);
+
+    // Modo de teste no browser: .../index.html?v=ID_DO_VIDEO
+    const testeId = new URLSearchParams(window.location.search).get('v');
+    if (testeId) {
+        player.mute();
+        player.loadVideoById(testeId);
+    }
     fila.forEach(processar);
     fila = [];
 }
